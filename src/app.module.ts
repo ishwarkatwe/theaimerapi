@@ -15,7 +15,7 @@ import { PaymentModule } from './payment/payment.module';
     ConfigModule.forRoot({
       envFilePath: ['.env'],
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI, {}),
+    MongooseModule.forRoot(process.env.MONGODB_URI, {}),
     UserModule,
     ProductModule,
     WishlistModule,
