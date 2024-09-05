@@ -14,10 +14,11 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
 
+const ENV = process.env.NODE_ENV;
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env'],
+      envFilePath:  !ENV ? '.env': '.env.development',
     }),
     MongooseModule.forRoot(process.env.MONGODB_URI, {}),
     MailerModule.forRoot({
