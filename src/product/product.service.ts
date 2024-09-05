@@ -4,6 +4,13 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './schemas/product.schema';
 import { Model } from 'mongoose';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import {
+  CategoryPopulate,
+  LikedbyPopulate,
+  SellerPopulate,
+  WishlistPopulate,
+} from 'src/common/querys/populates';
 
 @Injectable()
 export class ProductService {
@@ -16,21 +23,37 @@ export class ProductService {
     return newProduct.save();
   }
 
-  async findAll() {
-    return await this.productModel
-      .find()
-      .populate('seller', 'username email') // Populate seller details
-      .populate('likedBy', 'username') // Populate likedBy with usernames and emails
-      .populate('wishlist', 'username')
+  async findAll(
+    paginationQuery: PaginationQueryDto,
+  ): Promise<{ data: Product[]; total: number }> {
+    const { limit, offset, sortBy, sortOrder, search } = paginationQuery;
+
+    const filter = search
+      ? { name: { $regex: search, $options: 'i' } } // Search by name (case-insensitive)
+      : {};
+
+    const total = await this.productModel.countDocuments(filter).exec();
+    const products = await this.productModel
+      .find(filter)
+      .populate(SellerPopulate)
+      .populate(LikedbyPopulate)
+      .populate(WishlistPopulate)
+      .populate(CategoryPopulate)
+      .sort({ [sortBy]: sortOrder || 'asc' })
+      .skip(offset)
+      .limit(limit)
       .exec();
+
+    return { data: products, total };
   }
 
   async findOne(id: string) {
     const product = await this.productModel
       .findById(id)
-      .populate('seller', 'username email') // Populate seller details
-      .populate('likedBy', 'username')
-      .populate('wishlist', 'username')
+      .populate(SellerPopulate)
+      .populate(LikedbyPopulate)
+      .populate(WishlistPopulate)
+      .populate(CategoryPopulate)
       .exec();
 
     if (!product) {

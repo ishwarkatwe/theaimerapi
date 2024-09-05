@@ -1,6 +1,7 @@
 // src/schemas/product.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, Types } from 'mongoose';
+import { Category } from 'src/category/schemas/category.schema';
 import { User } from 'src/user/schemas/user.schemas';
 
 export type ProductDocument = Product & Document;
@@ -12,6 +13,9 @@ export class Product {
 
   @Prop()
   description: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true })
+  category: Category;
 
   @Prop({ required: true })
   price: number;

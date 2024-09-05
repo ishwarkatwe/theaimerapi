@@ -18,7 +18,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     let errorMessage = 'Internal server error';
 
-    console.log(exception);
+    // console.log(exception);
 
     if (exception instanceof HttpException) {
       statusCode = exception.getStatus();
@@ -41,7 +41,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
   }
 
   private handleMongoError(exception: MongoError): string {
-    console.log(exception);
+    // console.log(exception);
     switch (exception.code) {
       case 11000:
         return 'Duplicate key error';
