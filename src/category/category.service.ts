@@ -4,7 +4,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Category } from './schemas/category.schema';
 import { Model } from 'mongoose';
-import { BaseHandlerService } from 'src/common/service/base-handler/base-handler.service';
+import { BaseHandlerService } from 'src/core/base-handler/base-handler.service';
 
 @Injectable()
 export class CategoryService extends BaseHandlerService {
