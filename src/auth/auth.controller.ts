@@ -6,10 +6,10 @@ import {
   ApiNotFoundResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { CreateUserDto } from './../user/dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { LoginResDto } from './dto/login-res.dto';
-import { UserResDto } from 'src/user/dto/create-res.dto';
+import { UserResDto } from './../user/dto/create-res.dto';
 import { VerifyDto } from './dto/verify.dto';
 import { ResetDto } from './dto/reset.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
