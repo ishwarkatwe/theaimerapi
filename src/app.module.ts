@@ -11,6 +11,7 @@ import { PaymentModule } from './payment/payment.module';
 import { CategoryModule } from './category/category.module';
 import { AuthModule } from './auth/auth.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { CoreModule } from './core/core.module';
 
 const ENV = process.env.NODE_ENV;
 @Module({
@@ -44,6 +45,7 @@ const ENV = process.env.NODE_ENV;
     PaymentModule,
     CategoryModule,
     AuthModule,
+    CoreModule,
   ],
   controllers: [AppController],
   providers: [AppService],

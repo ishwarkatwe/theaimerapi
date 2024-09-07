@@ -12,7 +12,6 @@ import { LoginDto } from './dto/login.dto';
 import { UserResDto } from 'src/user/dto/create-res.dto';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { EmailService } from 'src/common/service/email/email.service';
 import { VerifyDto } from './dto/verify.dto';
 import { ResetDto } from './dto/reset.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';

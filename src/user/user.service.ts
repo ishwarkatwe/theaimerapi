@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -10,10 +11,10 @@ import { User, UserDocument } from './schemas/user.schemas';
 import { Model } from 'mongoose';
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
-import { EmailService } from 'src/common/service/email/email.service';
 import { VerifyDto } from 'src/auth/dto/verify.dto';
 import { ResetDto } from 'src/auth/dto/reset.dto';
 import { UpdatePasswordDto } from 'src/auth/dto/update-password.dto';
+import { EmailService } from 'src/core/email/email.service';
 
 @Injectable()
 export class UserService {
@@ -22,7 +23,14 @@ export class UserService {
     private readonly emailService: EmailService,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
+    const existingUser = await this.userModel.findOne({
+      email: createUserDto.email,
+    });
+    if (existingUser) {
+      throw new ConflictException('Email already exists');
+    }
+
     const newUser = new this.userModel(createUserDto);
     return newUser.save();
   }
