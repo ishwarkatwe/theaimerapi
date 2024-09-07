@@ -5,12 +5,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './schemas/product.schema';
 import { Model } from 'mongoose';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import {
-  CategoryPopulate,
-  LikedbyPopulate,
-  SellerPopulate,
-  WishlistPopulate,
-} from 'src/common/querys/populates';
+
+//User
+const userSelectors = 'name email';
+export const UserPopulate = { path: 'user', select: userSelectors };
+export const SellerPopulate = { path: 'seller', select: userSelectors };
+export const LikedbyPopulate = { path: 'likedBy', select: userSelectors };
+export const WishlistPopulate = { path: 'wishlist', select: userSelectors };
+
+//Category
+const catSelectors = 'name';
+export const CategoryPopulate = { path: 'category', select: catSelectors };
 
 @Injectable()
 export class ProductService {
