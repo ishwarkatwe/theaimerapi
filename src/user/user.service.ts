@@ -32,6 +32,12 @@ export class UserService {
     }
 
     const newUser = new this.userModel(createUserDto);
+
+    this.emailService.sendWelcomeMail({
+      email: newUser.email,
+      username: newUser.username
+    });
+
     return newUser.save();
   }
 
@@ -139,7 +145,7 @@ export class UserService {
       email: user.email,
       username: user.username,
       resetUrl:
-        process.env.FEBASEURL +
+        process.env.FE_BASE_URL +
         `?email=${user.email}&token=${resetPasswordToken}`,
     });
 

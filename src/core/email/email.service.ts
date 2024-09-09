@@ -1,10 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { ResetPassword, UserEmailTemplate } from './templates';
+import { ResetPassword, UserEmailTemplate, WelcomeOnBoard } from './templates';
 
 @Injectable()
 export class EmailService {
   constructor(private readonly mailerService: MailerService) {}
+
+  async sendWelcomeMail(user) {
+    try {
+      await this.mailerService.sendMail({
+        to: user.email,
+        subject: 'Welcome to ' + process.env.BRAND,
+        html: WelcomeOnBoard(
+          process.env.LOGO,
+          process.env.BRAND,
+          user.username,
+          process.env.FE_BASE_URL + '/login',
+        ),
+      });
+      console.log('Welcome mail send to ', user.email);
+    } catch (error) {
+      console.error('Error sending welcome email:', error);
+    }
+  }
 
   async sendOtpMail(user: any) {
     try {
@@ -18,9 +36,9 @@ export class EmailService {
           user.otp,
         ),
       });
-      console.log('Confirmation email sent successfully', user);
+      console.log('Otp email sent successfully', user);
     } catch (error) {
-      console.error('Error sending confirmation email:', error);
+      console.error('Error sending otp email:', error);
     }
   }
 

@@ -21,7 +21,7 @@ export const UserEmailTemplate = (
             <td style="padding: 20px; text-align: center;">
                 <h2 style="color: #333333; margin-bottom: 20px;">Email OTP Verification</h2>
                 <p style="color: #555555; font-size: 16px; line-height: 24px; margin-bottom: 30px;">
-                    Hello <strong style="color: #333333;">${username}</strong>,<br>
+                    Hello <strong style="color: #333333;text-transform: capitalize;">${username}</strong>,<br>
                     Your One-Time Password (OTP) for email verification is:
                 </p>
                 <div style="font-size: 36px; font-weight: bold; color: #007bff; text-align: center; margin-bottom: 30px;">
@@ -48,11 +48,11 @@ export const UserEmailTemplate = (
 </html>`;
 
 export const ResetPassword = (
-    logo,
-    brand,
-    username,
-    resetLink,
-  ) =>  `<!DOCTYPE html>
+  logo,
+  brand,
+  username,
+  resetLink,
+) => `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -70,7 +70,7 @@ export const ResetPassword = (
             <td style="padding: 20px; text-align: center;">
                 <h2 style="color: #333333; margin-bottom: 20px;">Reset Your Password</h2>
                 <p style="color: #555555; font-size: 16px; line-height: 24px; margin-bottom: 30px;">
-                    Hello <strong style="color: #333333;">${username}</strong>,
+                    Hello <strong style="color: #333333;text-transform: capitalize;">${username}</strong>,
                 </p>
                 <p style="color: #555555; font-size: 16px; line-height: 24px; margin-bottom: 30px;">
                     We received a request to reset your password. Click the button below to reset your password:
@@ -97,4 +97,56 @@ export const ResetPassword = (
     </table>
 </body>
 </html>
-`
+`;
+
+export const WelcomeOnBoard = (
+  logo,
+  brand,
+  username,
+  url,
+) => `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Your Password</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; background-color: #ffffff; margin-top: 50px; border: 1px solid #dddddd; border-radius: 5px;">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <img src="${logo}" alt="${brand}" style="width: 100px; height: auto;">
+            </td>
+        </tr>
+         <tr>
+            <td style="padding: 20px; text-align: center;">
+                <h2 style="color: #333333; margin-bottom: 20px;">Welcome to ${brand}!</h2>
+                <p style="color: #555555; font-size: 16px; line-height: 24px;">
+                    Hello <strong style="color: #333333;text-transform: capitalize;">${username}</strong>,
+                </p>
+                <p style="color: #555555; font-size: 16px; line-height: 24px;">
+                    We’re thrilled to have you on board. Whether you’re here to explore new opportunities or dive deeper into your passions, ${brand} is here to support you every step of the way!
+                </p>
+                <p style="color: #555555; font-size: 16px; line-height: 24px; margin-top: 20px;">
+                    Get started by exploring your personalized dashboard or connecting with others who share your goals.
+                </p>
+                <a href="${url}" style="display: inline-block; padding: 12px 20px; font-size: 16px; color: #ffffff; background-color: #007bff; text-decoration: none; border-radius: 5px; margin-top: 30px;">
+                    Get Started
+                </a>
+                <p style="color: #999999; font-size: 14px; line-height: 20px; margin-top: 40px;">
+                    If you have any questions, feel free to reach out to our support team. We're here to help!
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color: #f4f4f4; text-align: center; padding: 20px; border-top: 1px solid #dddddd;">
+                <p style="color: #aaaaaa; font-size: 12px; line-height: 18px;">
+                    &copy; 2024 ${brand}. All rights reserved.<br>
+                    Made with &#x2764; in India	
+                </p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+`;
