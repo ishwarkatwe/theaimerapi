@@ -9,9 +9,8 @@ import { AuthModule } from 'src/auth/auth.module';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
-    AuthModule,
   ],
   controllers: [ProductController],
-  providers: [ProductService, JwtService],
+  providers: [ProductService],
 })
 export class ProductModule {}

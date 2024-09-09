@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CoreModule } from 'src/core/core.module';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guard/auth.guard';
 import { UserModule } from './../user/user.module';
 @Module({
   imports: [

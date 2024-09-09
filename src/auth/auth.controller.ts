@@ -13,7 +13,9 @@ import { UserResDto } from './../user/dto/create-res.dto';
 import { VerifyDto } from './dto/verify.dto';
 import { ResetDto } from './dto/reset.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { Public } from './decorator/public.decorator';
 
+@Public()
 @ApiTags('Auth')
 @Controller()
 export class AuthController {
@@ -24,6 +26,7 @@ export class AuthController {
     type: LoginResDto,
   })
   @ApiNotFoundResponse({ description: 'User not found' })
+  @Public()
   @Post('login')
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);

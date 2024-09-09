@@ -12,6 +12,9 @@ import { CategoryModule } from './category/category.module';
 import { AuthModule } from './auth/auth.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { CoreModule } from './core/core.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auth/guard/auth.guard';
+import { JwtService } from '@nestjs/jwt';
 
 const ENV = process.env.NODE_ENV;
 @Module({
@@ -48,6 +51,12 @@ const ENV = process.env.NODE_ENV;
     CoreModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    JwtService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,  // Global JWT Guard
+    },
+  ],
 })
 export class AppModule {}
