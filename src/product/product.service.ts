@@ -80,20 +80,6 @@ export class ProductService {
     return updatedProduct;
   }
 
-  async addLike(productId: string, userId: string): Promise<Product> {
-    const product = await this.productModel
-      .findByIdAndUpdate(
-        productId,
-        { $addToSet: { likes: userId } },
-        { new: true },
-      )
-      .exec();
-    if (!product) {
-      throw new NotFoundException(`Product with ID ${productId} not found`);
-    }
-    return product;
-  }
-
   async remove(id: string) {
     const result = await this.productModel.findByIdAndDelete(id).exec();
     if (!result) {
@@ -153,6 +139,38 @@ export class ProductService {
       .findByIdAndUpdate(
         productId,
         { $pull: { wishlist: userId } },
+        { new: true },
+      )
+      .exec();
+    if (!product) {
+      throw new NotFoundException(`Product with ID ${productId} not found`);
+    }
+    return product;
+  }
+
+  async addToImages(productId: string, filePath: string): Promise<Product> {
+    const product = await this.productModel
+      .findByIdAndUpdate(
+        productId,
+        { $addToSet: { images: filePath } },
+        { new: true },
+      )
+      .exec();
+    if (!product) {
+      throw new NotFoundException(`Product with ID ${productId} not found`);
+    }
+    console.log(product);
+    return product;
+  }
+
+  async removeFromImages(
+    productId: string,
+    filePath: string,
+  ): Promise<Product> {
+    const product = await this.productModel
+      .findByIdAndUpdate(
+        productId,
+        { $pull: { images: filePath } },
         { new: true },
       )
       .exec();

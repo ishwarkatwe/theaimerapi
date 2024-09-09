@@ -1,7 +1,7 @@
 // src/schemas/user.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { Role, UserStatus } from '../dto/create-user.dto';
+import { Role } from '../dto/create-user.dto';
 
 export type UserDocument = User & Document;
 
@@ -9,6 +9,9 @@ export type UserDocument = User & Document;
 export class User {
   @Prop({ required: true })
   username: string;
+
+  @Prop()
+  image: string;
 
   @Prop({
     required: true,
@@ -24,8 +27,11 @@ export class User {
   @Prop({ enum: Role, default: Role.BUYER })
   role: string;
 
-  @Prop({ enum: UserStatus, default: UserStatus.ACTIVE })
-  status: string;
+  @Prop()
+  permissions: [];
+
+  @Prop({ default: true })
+  isActive: boolean;
 
   @Prop()
   otp: string;

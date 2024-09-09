@@ -42,11 +42,6 @@ export class ProductController {
     return this.productService.update(id, updateProductDto);
   }
 
-  @Put(':id/like/:userId')
-  addLike(@Param('id') productId: string, @Param('userId') userId: string) {
-    return this.productService.addLike(productId, userId);
-  }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.productService.remove(id);

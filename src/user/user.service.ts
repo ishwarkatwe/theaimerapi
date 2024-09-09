@@ -35,7 +35,7 @@ export class UserService {
 
     this.emailService.sendWelcomeMail({
       email: newUser.email,
-      username: newUser.username
+      username: newUser.username,
     });
 
     return newUser.save();
@@ -181,5 +181,15 @@ export class UserService {
 
   generateOtp(len = 3): string {
     return crypto.randomBytes(len).toString('hex').toUpperCase(); // Generate a 6-character OTP
+  }
+
+  async uploadProfile(id: string, filePath: string): Promise<User> {
+    const user = this.userModel
+      .findByIdAndUpdate(id, { image: filePath }, { new: true })
+      .exec();
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
   }
 }

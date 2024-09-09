@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsNumber, IsPositive } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+} from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty({ message: 'Product name is required' })
@@ -16,4 +23,12 @@ export class CreateProductDto {
 
   @IsNotEmpty({ message: 'Seller ID is required' })
   seller: string;
+
+  @ApiProperty({
+    description: 'User status',
+    example: 'true',
+  })
+  @IsBoolean()
+  @IsOptional()
+  isActive: boolean;
 }

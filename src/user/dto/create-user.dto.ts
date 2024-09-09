@@ -5,17 +5,16 @@ import {
   IsEmail,
   IsEnum,
   IsOptional,
+  IsBoolean,
 } from 'class-validator';
 
 export enum Role {
-  SELLER = 'SELLER',
   BUYER = 'BUYER',
+  SELLER = 'SELLER',
+  ADMIN = 'ADMIN',
+  MANAGER = 'MANAGER',
 }
 
-export enum UserStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-}
 export class CreateUserDto {
   @ApiProperty({
     description: 'Username as display name',
@@ -50,9 +49,9 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'User status',
-    example: 'ACTIVE',
+    example: 'true',
   })
-  @IsEnum(UserStatus)
+  @IsBoolean()
   @IsOptional()
-  status: UserStatus;
+  isActive: boolean;
 }
