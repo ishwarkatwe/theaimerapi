@@ -15,12 +15,14 @@ import { VerifyDto } from 'src/auth/dto/verify.dto';
 import { ResetDto } from 'src/auth/dto/reset.dto';
 import { UpdatePasswordDto } from 'src/auth/dto/update-password.dto';
 import { EmailService } from 'src/core/email/email.service';
+import { FirebaseService } from 'src/core/firebase/firebase.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private readonly emailService: EmailService,
+    private readonly firebaseService: FirebaseService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -183,13 +185,24 @@ export class UserService {
     return crypto.randomBytes(len).toString('hex').toUpperCase(); // Generate a 6-character OTP
   }
 
-  async uploadProfile(id: string, filePath: string): Promise<User> {
-    const user = this.userModel
-      .findByIdAndUpdate(id, { image: filePath }, { new: true })
-      .exec();
-    if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
+  async uploadProfile(file: Express.Multer.File, userId: string): Promise<any> {
+    if (userId) {
+      const url = await this.firebaseService.uploadFile(file, 'avatars');
+
+      const userData = await this.findOne(userId);
+
+      if (userData.image) {
+        this.firebaseService.deleteFileByUrl(userData.image);
+      }
+
+      const user = await this.userModel
+        .findByIdAndUpdate(userId, { image: url }, { new: true })
+        .exec();
+
+      if (!user) {
+        throw new NotFoundException(`User with ID ${userId} not found`);
+      }
+      return user;
     }
-    return user;
   }
 }

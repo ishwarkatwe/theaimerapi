@@ -5,6 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './schemas/product.schema';
 import { Model } from 'mongoose';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { FirebaseService } from 'src/core/firebase/firebase.service';
+import { RemoveProductDto } from './dto/upload-product.dto';
 
 //User
 const userSelectors = 'name email';
@@ -21,6 +23,7 @@ export const CategoryPopulate = { path: 'category', select: catSelectors };
 export class ProductService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<Product>,
+    private readonly firebaseService: FirebaseService,
   ) {}
 
   create(createProductDto: CreateProductDto) {
@@ -148,32 +151,38 @@ export class ProductService {
     return product;
   }
 
-  async addToImages(productId: string, filePath: string): Promise<Product> {
-    const product = await this.productModel
-      .findByIdAndUpdate(
-        productId,
-        { $addToSet: { images: filePath } },
-        { new: true },
-      )
-      .exec();
-    if (!product) {
-      throw new NotFoundException(`Product with ID ${productId} not found`);
+  async uploadImage(
+    file: Express.Multer.File,
+    productId: string,
+  ): Promise<any> {
+    if (productId) {
+      const url = await this.firebaseService.uploadFile(file, 'products');
+
+      const product = await this.productModel
+        .findByIdAndUpdate(
+          productId,
+          { $addToSet: { images: url } },
+          { new: true },
+        )
+        .exec();
+
+      if (!product) {
+        throw new NotFoundException(`Product with ID ${productId} not found`);
+      }
+
+      return product;
     }
-    console.log(product);
-    return product;
   }
 
-  async removeFromImages(
-    productId: string,
-    filePath: string,
-  ): Promise<Product> {
+  async removeImage({ productId, url }: RemoveProductDto): Promise<Product> {
     const product = await this.productModel
-      .findByIdAndUpdate(
-        productId,
-        { $pull: { images: filePath } },
-        { new: true },
-      )
+      .findByIdAndUpdate(productId, { $pull: { images: url } }, { new: true })
       .exec();
+
+    if (url) {
+      await this.firebaseService.deleteFileByUrl(url);
+    }
+
     if (!product) {
       throw new NotFoundException(`Product with ID ${productId} not found`);
     }

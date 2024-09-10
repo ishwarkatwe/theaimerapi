@@ -17,7 +17,6 @@ import { AuthGuard } from './auth/guard/auth.guard';
 import { JwtService } from '@nestjs/jwt';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { UploadModule } from './upload/upload.module';
 
 const ENV = process.env.NODE_ENV;
 @Module({
@@ -55,14 +54,14 @@ const ENV = process.env.NODE_ENV;
     CategoryModule,
     AuthModule,
     CoreModule,
-    UploadModule,
   ],
   controllers: [AppController],
-  providers: [AppService,
+  providers: [
+    AppService,
     JwtService,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,  // Global JWT Guard
+      useClass: AuthGuard, // Global JWT Guard
     },
   ],
 })

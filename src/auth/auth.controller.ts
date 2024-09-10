@@ -45,7 +45,7 @@ export class AuthController {
   @ApiCreatedResponse({
     description: 'Generate OTP for email verification',
   })
-  @Get('otp/:email')
+  @Get('send-email-otp/:email')
   otp(@Param('email') email: string) {
     return this.authService.generateOtp(email);
   }
@@ -53,7 +53,7 @@ export class AuthController {
   @ApiCreatedResponse({
     description: 'Verify OTP for email verification',
   })
-  @Post('verify')
+  @Post('verify-email-otp')
   verify(@Body() verifyDto: VerifyDto) {
     return this.authService.verifyOtp(verifyDto);
   }
@@ -61,7 +61,7 @@ export class AuthController {
   @ApiCreatedResponse({
     description: 'Verify OTP for email verification',
   })
-  @Post('reset')
+  @Post('reset-password')
   reset(@Body() resetDto: ResetDto) {
     return this.authService.resetPassword(resetDto);
   }

@@ -8,6 +8,9 @@ import {
   Delete,
   Put,
   Query,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -15,6 +18,8 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorator/public.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { RemoveProductDto, UploadProductDto } from './dto/upload-product.dto';
 
 @ApiTags('Product')
 @Controller('product')
@@ -77,5 +82,25 @@ export class ProductController {
     @Param('userId') userId: string,
   ) {
     return this.productService.removeFromWishList(productId, userId);
+  }
+
+  @Delete('upload-image')
+  removeImage() {
+    return 'delete';
+  }
+
+  @Post('upload-image')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadAvatar(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() uploadProductDto: UploadProductDto,
+  ) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+    return await this.productService.uploadImage(
+      file,
+      uploadProductDto.productId,
+    );
   }
 }

@@ -42,6 +42,7 @@ export class AuthService {
     return {
       isVerified: user.isVerified,
       access_token: await this.jwtService.signAsync({
+        userId: user['id'],
         email: user.email,
         username: user.username,
         role: user.role,
