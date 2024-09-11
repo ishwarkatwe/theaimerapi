@@ -53,7 +53,6 @@ export class UserController {
     }
 
     const userId = req['user'].userId;
-
     return this.userService.uploadProfile(file, userId);
   }
 }

@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Patch,
+  Req,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -19,34 +20,38 @@ export class CartController {
     return this.cartService.findByUserId(id);
   }
 
-  @Post(':userId/product/:productId')
+  @Post('product/:productId')
   async addProductToCart(
-    @Param('userId') userId: string,
     @Param('productId') productId: string,
     @Body('quantity') quantity: number,
+    @Req() req: Request,
   ) {
+    const userId = req['user'].userId;
     return this.cartService.addProductToCart(userId, productId, quantity);
   }
 
-  @Patch(':userId/product/:productId')
+  @Patch('product/:productId')
   async updateProductQuantity(
-    @Param('userId') userId: string,
     @Param('productId') productId: string,
     @Body('quantity') quantity: number,
+    @Req() req: Request,
   ) {
+    const userId = req['user'].userId;
     return this.cartService.updateProductQuantity(userId, productId, quantity);
   }
 
-  @Delete(':userId/product/:productId')
+  @Delete('product/:productId')
   async removeProductFromCart(
-    @Param('userId') userId: string,
     @Param('productId') productId: string,
+    @Req() req: Request,
   ) {
+    const userId = req['user'].userId;
     return this.cartService.removeProductFromCart(userId, productId);
   }
 
-  @Delete(':userId')
-  async removeAllProductsFromCart(@Param('userId') userId: string) {
+  @Delete()
+  async removeAllProductsFromCart(@Req() req: Request) {
+    const userId = req['user'].userId;
     return this.cartService.removeAllProductsFromCart(userId);
   }
 }

@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
+  Req,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -72,35 +73,30 @@ export class ProductController {
     return this.productService.remove(id);
   }
 
-  @Put(':productId/likes/:userId')
-  addToLikes(
-    @Param('productId') productId: string,
-    @Param('userId') userId: string,
-  ) {
+  @Put(':productId/likes')
+  addToLikes(@Param('productId') productId: string, @Req() req: Request) {
+    const userId = req['user'].userId;
     return this.productService.addToLikes(productId, userId);
   }
 
-  @Delete(':productId/likes/:userId')
-  removeFromLikes(
-    @Param('productId') productId: string,
-    @Param('userId') userId: string,
-  ) {
+  @Delete(':productId/likes')
+  removeFromLikes(@Param('productId') productId: string, @Req() req: Request) {
+    const userId = req['user'].userId;
     return this.productService.removeFromLikes(productId, userId);
   }
 
-  @Put(':productId/wishlist/:userId')
-  addToWishList(
-    @Param('productId') productId: string,
-    @Param('userId') userId: string,
-  ) {
+  @Put(':productId/wishlist')
+  addToWishList(@Param('productId') productId: string, @Req() req: Request) {
+    const userId = req['user'].userId;
     return this.productService.addToWishList(productId, userId);
   }
 
-  @Delete(':productId/wishlist/:userId')
+  @Delete(':productId/wishlist')
   removeFromWishList(
     @Param('productId') productId: string,
-    @Param('userId') userId: string,
+    @Req() req: Request,
   ) {
+    const userId = req['user'].userId;
     return this.productService.removeFromWishList(productId, userId);
   }
 }
