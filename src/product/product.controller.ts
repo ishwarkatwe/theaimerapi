@@ -73,25 +73,25 @@ export class ProductController {
     return this.productService.remove(id);
   }
 
-  @Put(':productId/likes')
+  @Put('likes/:productId')
   addToLikes(@Param('productId') productId: string, @Req() req: Request) {
     const userId = req['user'].userId;
     return this.productService.addToLikes(productId, userId);
   }
 
-  @Delete(':productId/likes')
+  @Delete('likes/:productId')
   removeFromLikes(@Param('productId') productId: string, @Req() req: Request) {
     const userId = req['user'].userId;
     return this.productService.removeFromLikes(productId, userId);
   }
 
-  @Put(':productId/wishlist')
+  @Put('wishlist/:productId')
   addToWishList(@Param('productId') productId: string, @Req() req: Request) {
     const userId = req['user'].userId;
     return this.productService.addToWishList(productId, userId);
   }
 
-  @Delete(':productId/wishlist')
+  @Delete('wishlist/:productId')
   removeFromWishList(
     @Param('productId') productId: string,
     @Req() req: Request,

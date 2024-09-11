@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Req,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -19,14 +20,16 @@ import { ApiTags } from '@nestjs/swagger';
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @Post(':id')
-  create(@Param('id') id: string, @Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.createOrder(id, createOrderDto);
+  @Post()
+  create(@Body() createOrderDto: CreateOrderDto, @Req() req: Request) {
+    const userId = req['user'].userId;
+    return this.ordersService.createOrder(userId, createOrderDto);
   }
 
   @Get()
-  findAll(@Query() paginationQuery: PaginationQueryDto) {
-    return this.ordersService.findAll(paginationQuery);
+  findAll(@Query() paginationQuery: PaginationQueryDto, @Req() req: Request) {
+    const userId = req['user'].userId;
+    return this.ordersService.findAll(paginationQuery, userId);
   }
 
   @Get(':id')

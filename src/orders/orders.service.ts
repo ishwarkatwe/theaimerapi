@@ -67,6 +67,7 @@ export class OrdersService {
 
   async findAll(
     paginationQuery: PaginationQueryDto,
+    userId: string,
   ): Promise<{ data: Order[]; total: number }> {
     const { limit, offset, sortBy, sortOrder, search } = paginationQuery;
 
@@ -76,7 +77,7 @@ export class OrdersService {
 
     const total = await this.orderModel.countDocuments(filter).exec();
     const orders = await this.orderModel
-      .find(filter)
+      .find({ ...filter, user: userId })
       .sort({ [sortBy]: sortOrder || 'asc' })
       .skip(offset)
       .limit(limit)
