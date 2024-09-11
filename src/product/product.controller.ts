@@ -26,6 +26,26 @@ import { RemoveProductDto, UploadProductDto } from './dto/upload-product.dto';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @Post('upload-image')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() uploadProductDto: UploadProductDto,
+  ) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+    return await this.productService.uploadImage(
+      file,
+      uploadProductDto.productId,
+    );
+  }
+
+  @Patch('remove-image')
+  removeImage(@Body() removeProductDto: RemoveProductDto) {
+    return this.productService.removeImage(removeProductDto);
+  }
+
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
     return this.productService.create(createProductDto);
@@ -82,25 +102,5 @@ export class ProductController {
     @Param('userId') userId: string,
   ) {
     return this.productService.removeFromWishList(productId, userId);
-  }
-
-  @Delete('upload-image')
-  removeImage() {
-    return 'delete';
-  }
-
-  @Post('upload-image')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadAvatar(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() uploadProductDto: UploadProductDto,
-  ) {
-    if (!file) {
-      throw new BadRequestException('No file uploaded');
-    }
-    return await this.productService.uploadImage(
-      file,
-      uploadProductDto.productId,
-    );
   }
 }
