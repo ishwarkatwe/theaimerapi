@@ -17,12 +17,13 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorator/public.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { RemoveProductDto, UploadProductDto } from './dto/upload-product.dto';
 
 @ApiTags('Product')
+@ApiBearerAuth('jwt')
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}

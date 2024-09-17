@@ -17,6 +17,14 @@ async function bootstrap() {
     .setTitle('TheAimer')
     .setDescription('Get started for simple shopping solution.')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'jwt', // This 'jwt' is used as a reference for all secured API calls.
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
 

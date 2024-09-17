@@ -9,15 +9,17 @@ import {
   Req,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @ApiTags('Cart')
+@ApiBearerAuth('jwt')
 @Controller('cart')
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cartService.findByUserId(id);
+  @Get()
+  findOne(@Req() req: Request) {
+    const userId = req['user'].userId;
+    return this.cartService.findByUserId(userId);
   }
 
   @Post('product/:productId')

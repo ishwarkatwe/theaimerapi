@@ -2,9 +2,10 @@ import { Controller, Post, HttpStatus, Req, Res } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { PaymentStatus } from 'src/orders/schemas/order.schema';
 import { PaymentService } from './payment.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Payment')
+@ApiBearerAuth('jwt')
 @Controller('razorpay')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}

@@ -10,10 +10,11 @@ import {
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorator/public.decorator';
 
 @ApiTags('Category')
+@ApiBearerAuth('jwt')
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
