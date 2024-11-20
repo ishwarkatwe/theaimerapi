@@ -13,6 +13,12 @@ async function bootstrap() {
   // Register the global exception filter
   app.useGlobalFilters(new AllExceptionsFilter());
 
+  app.enableCors({
+    origin: 'http://localhost:4200', // Your frontend URL
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization',
+  });
+
   const config = new DocumentBuilder()
     .setTitle('TheAimer')
     .setDescription('Get started for simple shopping solution.')
