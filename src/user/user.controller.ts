@@ -28,6 +28,12 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('details')
+  findDetails(@Req() req: Request) {
+    const userId = req['user'].userId;
+    return this.userService.findOne(userId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
